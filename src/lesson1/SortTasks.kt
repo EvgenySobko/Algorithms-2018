@@ -2,6 +2,11 @@
 
 package lesson1
 
+import java.io.FileWriter
+import java.lang.IllegalArgumentException
+import java.nio.file.Files
+import java.nio.file.Paths
+
 /**
  * Сортировка времён
  *
@@ -31,7 +36,12 @@ package lesson1
  * В случае обнаружения неверного формата файла бросить любое исключение.
  */
 fun sortTimes(inputName: String, outputName: String) {
-    TODO()
+    val text = Files.readAllLines(Paths.get(inputName)).toTypedArray()
+    val writer = FileWriter(outputName, false)
+    text.forEach { if ((it.matches(Regex(""""^(\d.:\d.:\d.)$""")))) throw IllegalArgumentException() }
+    insertionSort(text)
+    text.forEach { writer.write(it + "\n") }
+    writer.flush()
 }
 
 /**
