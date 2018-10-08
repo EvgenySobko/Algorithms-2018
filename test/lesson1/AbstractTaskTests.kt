@@ -1,11 +1,15 @@
 package lesson1
 
+
 import java.io.BufferedWriter
 import java.io.File
 import java.util.*
 import kotlin.math.abs
 
+
+
 abstract class AbstractTaskTests : AbstractFileTests() {
+
 
     protected fun sortTimes(sortTimes: (String, String) -> Unit) {
         try {
@@ -39,6 +43,12 @@ abstract class AbstractTaskTests : AbstractFileTests() {
         } finally {
             File("temp.txt").delete()
         }
+        try {
+            sortTimes("input/time_in4.txt", "temp.txt")
+            assertFileContent("temp.txt", File("input/time_out4.txt").readLines().joinToString(separator = "\n"))
+        } finally {
+            File("temp.txt").delete()
+        }
     }
 
     protected fun sortAddresses(sortAddresses: (String, String) -> Unit) {
@@ -61,7 +71,7 @@ abstract class AbstractTaskTests : AbstractFileTests() {
         val random = Random()
         val temperatures = mutableListOf<Int>()
         for (t in -2730..5000) {
-            val count = random.nextInt(size)
+            val count = 10
             for (i in 1..count) {
                 temperatures += t
             }

@@ -2,10 +2,15 @@
 
 package lesson1
 
+import java.io.BufferedOutputStream
+import java.io.BufferedWriter
+import java.io.File
 import java.io.FileWriter
-import java.lang.IllegalArgumentException
 import java.nio.file.Files
-import java.nio.file.Paths
+
+fun toString(array: List<Double>): String {
+    return array.toString().replace("[", "").replace(", ", "\n").replace("]", "")
+}
 
 /**
  * Сортировка времён
@@ -36,13 +41,19 @@ import java.nio.file.Paths
  * В случае обнаружения неверного формата файла бросить любое исключение.
  */
 fun sortTimes(inputName: String, outputName: String) {
-    val text = Files.readAllLines(Paths.get(inputName)).toTypedArray()
+    val text = File(inputName).readLines().toTypedArray()
     val writer = FileWriter(outputName, false)
-    text.forEach { if ((it.matches(Regex(""""^(\d.:\d.:\d.)$""")))) throw IllegalArgumentException() }
+    text.forEach {
+        if (!(it.matches(Regex("""^(([0-1][0-9]|[2][0-3]):[0-5][0-9]:[0-5][0-9])$""")))) {
+            throw IllegalArgumentException()
+        }
+    }
     insertionSort(text)
     text.forEach { writer.write(it + "\n") }
-    writer.flush()
+    writer.close()
 }
+//Трудоемкость всего алгоритма - O(N^2 + N) = O(N^2)
+//Ресурсоемкость - O(N)
 
 /**
  * Сортировка адресов
@@ -105,8 +116,16 @@ fun sortAddresses(inputName: String, outputName: String) {
  * 121.3
  */
 fun sortTemperatures(inputName: String, outputName: String) {
-    TODO()
+    val temps = File(inputName).readLines().toTypedArray()
+    val newArray = ArrayList<Double>()
+    temps.forEach {
+        newArray.add(it.toDouble())
+    }
+    newArray.sort()
+    File(outputName).writeText(newArray.joinToString("\n"))
 }
+//Трудоемкость всего алгоритма - O(NlogN)
+//Ресурсоемкость алгоритма - O(2N) = O(N)
 
 /**
  * Сортировка последовательности
