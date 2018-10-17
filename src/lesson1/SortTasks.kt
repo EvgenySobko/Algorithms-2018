@@ -2,11 +2,8 @@
 
 package lesson1
 
-import java.io.BufferedOutputStream
-import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
-import java.nio.file.Files
 
 fun toString(array: List<Double>): String {
     return array.toString().replace("[", "").replace(", ", "\n").replace("]", "")

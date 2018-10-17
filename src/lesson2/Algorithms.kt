@@ -77,8 +77,14 @@ fun optimizeBuyAndSell(inputName: String): Pair<Int, Int> {
  * Х х Х
  */
 fun josephTask(menNumber: Int, choiceInterval: Int): Int {
-    TODO()
+    var result = 0
+    for (i in 0 until menNumber) {
+        result = (result + choiceInterval) % (i + 1)
+    }
+    return result + 1
 }
+//Трудоемкость - O(N)
+//Ресурсоемкость - О(N)
 
 /**
  * Наибольшая общая подстрока.
