@@ -2,6 +2,7 @@
 
 package lesson2
 
+
 /**
  * Получение наибольшей прибыли (она же -- поиск максимального подмассива)
  * Простая
@@ -98,8 +99,37 @@ fun josephTask(menNumber: Int, choiceInterval: Int): Int {
  * вернуть ту из них, которая встречается раньше в строке first.
  */
 fun longestCommonSubstring(first: String, second: String): String {
-    TODO()
+    var result = StringBuilder()
+    val num = Array(first.length) { IntArray(second.length) }
+    var maxLength = 0
+    var substringBegin = 0
+    for (i in 0 until first.length) {
+        for (j in 0 until second.length) {
+            if (first[i] == second[j]) {
+                if (i == 0 || j == 0) {
+                    num[i][j] = 1
+                } else {
+                    num[i][j] = 1 + num[i - 1][j - 1]
+                }
+                if (num[i][j] > maxLength) {
+                    maxLength = num[i][j]
+                    val newSubstringBegin = i - num[i][j] + 1
+                    if (substringBegin == newSubstringBegin) {
+                        result.append(first[i])
+                    } else {
+                        substringBegin = newSubstringBegin
+                        result = StringBuilder()
+                        result.append(first.substring(substringBegin, i + 1))
+                    }
+                }
+            }
+        }
+    }
+    return result.toString()
 }
+
+//Трудоемкость - O(first.length * second.length) = O(N * M)
+//Ресурсоемкость - O(4N) = O(N)
 
 /**
  * Число простых чисел в интервале
