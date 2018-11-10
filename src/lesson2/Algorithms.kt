@@ -129,7 +129,7 @@ fun longestCommonSubstring(first: String, second: String): String {
 }
 
 //Трудоемкость - O(first.length * second.length) = O(N * M)
-//Ресурсоемкость - O(4N) = O(N)
+//Ресурсоемкость - 4 * O(first.length * second.length) = O(N * M)
 
 /**
  * Число простых чисел в интервале

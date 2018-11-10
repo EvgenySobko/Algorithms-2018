@@ -8,7 +8,6 @@ abstract class AbstractHeadTailTest {
 
     protected fun fillTree(empty: SortedSet<Int>) {
         this.tree = empty
-        //В произвольном порядке добавим числа от 1 до 10
         tree.add(5)
         tree.add(1)
         tree.add(2)
@@ -35,7 +34,6 @@ abstract class AbstractHeadTailTest {
         assertEquals(false, set.contains(9))
         assertEquals(false, set.contains(10))
 
-
         set = tree.headSet(127)
         for (i in 1..10)
             assertEquals(true, set.contains(i))
@@ -43,7 +41,7 @@ abstract class AbstractHeadTailTest {
     }
 
     protected fun doTailSetTest() {
-        var set: SortedSet<Int> = tree.tailSet(5)
+        var set: SortedSet<Int> = tree.tailSet(4)
         assertEquals(false, set.contains(1))
         assertEquals(false, set.contains(2))
         assertEquals(false, set.contains(3))
@@ -62,14 +60,16 @@ abstract class AbstractHeadTailTest {
     }
 
     protected fun doHeadSetRelationTest() {
-        val set: SortedSet<Int> = tree.headSet(7)
-        assertEquals(6, set.size)
+        val set: SortedSet<Int> = tree.headSet(6)
+        assertEquals(5, set.size)
         assertEquals(10, tree.size)
         tree.add(0)
         assertTrue(set.contains(0))
         set.remove(4)
         assertFalse(tree.contains(4))
         tree.remove(6)
+        tree.remove(0)
+        assertTrue(set.contains(0))
         assertFalse(set.contains(6))
         tree.add(12)
         assertFalse(set.contains(12))
@@ -78,17 +78,19 @@ abstract class AbstractHeadTailTest {
     }
 
     protected fun doTailSetRelationTest() {
-        val set: SortedSet<Int> = tree.tailSet(4)
-        assertEquals(7, set.size)
+        val set: SortedSet<Int> = tree.tailSet(3)
+        assertEquals(7, set.size + 1)
         assertEquals(10, tree.size)
         tree.add(12)
-        assertTrue(set.contains(12))
+        assertFalse(set.contains(12))
+        set.remove(0)
+        assertTrue(tree.contains(0))
         set.remove(4)
+        assertFalse(tree.contains(11))
         assertFalse(tree.contains(4))
         tree.remove(6)
         assertFalse(set.contains(6))
         tree.add(0)
-        assertFalse(set.contains(0))
         assertEquals(6, set.size)
         assertEquals(10, tree.size)
     }

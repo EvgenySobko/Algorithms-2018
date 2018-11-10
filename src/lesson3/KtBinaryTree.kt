@@ -1,17 +1,18 @@
 package lesson3
 
-import java.util.SortedSet
+import java.util.*
 import kotlin.NoSuchElementException
 
 // Attention: comparable supported but comparator is not
 class KtBinaryTree<T : Comparable<T>> : AbstractMutableSet<T>(), CheckableSortedSet<T> {
 
     private var root: Node<T>? = null
+    private var parent: Node<T>? = null
 
     override var size = 0
         private set
 
-    private class Node<T>(val value: T) {
+    private class Node<T>(var value: T) {
 
         var left: Node<T>? = null
 
@@ -87,6 +88,7 @@ class KtBinaryTree<T : Comparable<T>> : AbstractMutableSet<T>(), CheckableSorted
             TODO()
         }
 
+
         override fun hasNext(): Boolean = findNext() != null
 
         override fun next(): T {
@@ -119,8 +121,55 @@ class KtBinaryTree<T : Comparable<T>> : AbstractMutableSet<T>(), CheckableSorted
      * Найти множество всех элементов меньше заданного
      * Сложная
      */
+
+    //В обоих задачах на множества ресурсоемкость = O(N), трудоемкость = O(N)
+
     override fun headSet(toElement: T): SortedSet<T> {
-        TODO()
+        val result: SortedSet<T> = TreeSet<T>()
+        findSet(result, root, toElement, "headSet")
+        return result
+    }
+
+    private fun findSet(set: SortedSet<T>, key: Node<T>?, element: T, flag: String) {
+        val comparison = key!!.value.compareTo(element)
+        if (flag == "headSet") {
+            if (comparison <= 0) {
+                if (key.left != null) {
+                    addictionToTheSet(set, key.left!!)
+                }
+            }
+            if (comparison < 0) {
+                set.add(key.value)
+                if (key.right != null) {
+                    findSet(set, key.right!!, element, "headSet")
+                }
+            }
+        } else if (flag == "tailSet"){
+            if (comparison >= 0) {
+                set.add(key.value)
+                if (key.right != null) {
+                    addictionToTheSet(set, key.right!!)
+                }
+                if (key.left != null) {
+                    findSet(set, key.left!!, element, "tailSet")
+                }
+            }
+            if (comparison > 0) {
+                if (key.right != null) {
+                    findSet(set, key.right!!, element, "tailSet")
+                }
+            }
+        }
+    }
+
+    private fun addictionToTheSet(set: SortedSet<T>, key: Node<T>) {
+        set.add(key.value)
+        if (key.left != null) {
+            addictionToTheSet(set, key.left!!)
+        }
+        if (key.right != null) {
+            addictionToTheSet(set, key.right!!)
+        }
     }
 
     /**
@@ -128,7 +177,9 @@ class KtBinaryTree<T : Comparable<T>> : AbstractMutableSet<T>(), CheckableSorted
      * Сложная
      */
     override fun tailSet(fromElement: T): SortedSet<T> {
-        TODO()
+        val result: SortedSet<T> = TreeSet<T>()
+        findSet(result, root, fromElement, "tailSet")
+        return result
     }
 
     override fun first(): T {
