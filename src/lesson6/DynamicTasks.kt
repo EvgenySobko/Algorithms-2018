@@ -2,6 +2,8 @@
 
 package lesson6
 
+import java.io.File
+
 /**
  * Наибольшая общая подпоследовательность.
  * Средняя
@@ -53,8 +55,43 @@ fun longestIncreasingSubSequence(list: List<Int>): List<Int> {
  *
  * Здесь ответ 2 + 3 + 4 + 1 + 2 = 12
  */
+
+//Трудоемкость - O(height * width)
+//Ресурсоемкость - O(height * width)
+
 fun shortestPathOnField(inputName: String): Int {
-    TODO()
+    val fieldStrings = ArrayList<List<String>>()
+    File(inputName).forEachLine { fieldStrings.add(it.split(" ", "\n")) }
+    val height = fieldStrings.size
+    val width = fieldStrings[0].size
+    val field = Array(height) { IntArray(width) }
+    field[0][0] = fieldStrings[0][0].toInt()
+    for (i in 1 until height) {
+        field[i][0] = field[i - 1][0] + fieldStrings[i][0].toInt()
+    }
+    for (i in 1 until width) {
+        field[0][i] = field[0][i - 1] + fieldStrings[0][i].toInt()
+    }
+    for (i in 1 until height) {
+        for (j in 1 until width) {
+            field[i][j] = minOfThree(field[i - 1][j], field[i][j - 1], field[i - 1][j - 1]) + fieldStrings[i][j].toInt()
+        }
+    }
+    return field[height - 1][width - 1]
+}
+
+private fun minOfThree(first: Int, second: Int, third: Int): Int {
+    var min = first + second + third
+    if (first >= second && third >= second) {
+        min = second
+    }
+    if (second >= first && third >= first) {
+        min = first
+    }
+    if (first >= third && second >= third) {
+        min = third
+    }
+    return min
 }
 
 // Задачу "Максимальное независимое множество вершин в графе без циклов"
